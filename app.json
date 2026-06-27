@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "RAF Connect",
+    "slug": "raf-connect",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "rafconnect",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "za.co.artobyte.rafconnect"
+    },
+    "android": {
+      "package": "za.co.artobyte.rafconnect",
+      "adaptiveIcon": {
+        "backgroundColor": "#0F2D3A"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
