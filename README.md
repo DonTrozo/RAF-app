@@ -4,11 +4,13 @@ RAF Connect is a pilot-ready mobile application concept for the Road Accident Fu
 
 The app is designed to help claimants track RAF claim progress, view missing documents, receive notifications, book appointments, and communicate with RAF officials through a secure claimant portal.
 
-## Current MVP
+## Current Status
 
-This repository now contains an Expo React Native mobile MVP for Android and iOS.
+This repository contains an Expo React Native mobile app for Android and iOS with production-readiness scaffolding.
 
-### Built screens
+It is not connected to live RAF systems yet. The current app runs in mock mode and is structured so a backend API can be connected later.
+
+## Built Screens
 
 - Claimant dashboard
 - Claim timeline
@@ -20,6 +22,19 @@ This repository now contains an Expo React Native mobile MVP for Android and iOS
 - Mock document statuses
 - Mock notifications
 - Mock appointments
+
+## Production-Readiness Additions
+
+- Environment configuration template
+- EAS Android/iOS build profiles
+- TypeScript CI workflow
+- Backend-ready API client
+- Claim service abstraction
+- Validation helpers
+- API contract documentation
+- POPIA/privacy readiness documentation
+- Security checklist
+- Release QA checklist
 
 ## Product Positioning
 
@@ -40,16 +55,33 @@ The first version works without deep RAF API integration. It uses mock claim dat
 - TypeScript
 - Android and iOS support
 - Mock local data for MVP demo
+- EAS build profiles
+- GitHub Actions CI
 
 ## Project Structure
 
 ```text
 App.tsx
 src/
+  api/
+    client.ts
+  services/
+    claimsService.ts
+  config.ts
   mockData.ts
+  theme.ts
   types.ts
-package.json
+  validation.ts
+docs/
+  API_CONTRACT.md
+  POPIA_AND_PRIVACY.md
+  SECURITY_CHECKLIST.md
+  RELEASE_QA.md
+.github/workflows/ci.yml
+.env.example
 app.json
+eas.json
+package.json
 tsconfig.json
 ```
 
@@ -79,6 +111,26 @@ Run iOS:
 npm run ios
 ```
 
+Typecheck:
+
+```bash
+npm run typecheck
+```
+
+## Build Preview Apps
+
+Android preview build:
+
+```bash
+npm run build:preview:android
+```
+
+iOS preview build:
+
+```bash
+npm run build:preview:ios
+```
+
 ## MVP Acceptance Criteria
 
 - Claimant can view an active RAF claim
@@ -91,20 +143,20 @@ npm run ios
 - Claimant can view appointments
 - Claimant can view profile and POPIA/security controls
 
-## Next Build Phase
+## Go-Live Blockers
 
-The next phase should add:
+Before real production use, the following must still be implemented:
 
-1. Real navigation using Expo Router or React Navigation
-2. Login and registration screens
-3. POPIA consent flow
-4. Claim reference linking form
-5. Document upload interaction
-6. Admin web portal
-7. API backend
-8. PostgreSQL database
-9. Secure document storage
-10. Notification provider integrations
+1. Backend API
+2. Real authentication
+3. POPIA consent capture
+4. Claim reference verification
+5. Secure document upload
+6. Encrypted file storage
+7. Role-based admin/partner access
+8. Audit logging
+9. Privacy policy and support process
+10. Penetration/security test
 
 ## Commercial Direction
 
