@@ -8,7 +8,11 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build:preview:android": "eas build --platform android --profile preview",
+    "build:preview:ios": "eas build --platform ios --profile preview",
+    "build:production:android": "eas build --platform android --profile production",
+    "build:production:ios": "eas build --platform ios --profile production"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.4",
@@ -21,6 +25,7 @@
   },
   "devDependencies": {
     "@types/react": "~18.2.79",
+    "eas-cli": "^12.6.2",
     "typescript": "~5.3.3"
   }
 }
