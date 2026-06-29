@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  typecheck:
-    name: TypeScript check
+  mobile-typecheck:
+    name: Mobile TypeScript check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,10 +20,29 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
-      - name: Install dependencies
+      - name: Install mobile dependencies
         run: npm install
 
-      - name: Typecheck
+      - name: Typecheck mobile
+        run: npm run typecheck
+
+  backend-typecheck:
+    name: Backend TypeScript check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install backend dependencies
+        working-directory: server
+        run: npm install
+
+      - name: Typecheck backend
+        working-directory: server
         run: npm run typecheck
