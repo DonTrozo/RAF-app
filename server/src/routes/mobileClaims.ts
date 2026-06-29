@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { claims, documents, messages, notifications, appointments } from '../../../src/mockData';
+import { claims, documents, messages, notifications, appointments } from '../data/demoData';
 import { requireSession } from '../middleware/session';
 import { requireRole } from '../middleware/roles';
 import { recordAuditEvent } from '../lib/auditLog';
