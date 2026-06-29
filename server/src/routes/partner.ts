@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { claims, documents } from '../../../src/mockData';
+import { claims, documents } from '../data/demoData';
 import { requireSession } from '../middleware/session';
 import { requireRole } from '../middleware/roles';
 import { recordAuditEvent } from '../lib/auditLog';
