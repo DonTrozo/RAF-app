@@ -12,7 +12,11 @@ declare global {
 }
 
 export function createSessionToken(user: AuthUser) {
-  return jwt.sign(user, config.jwtSecret, { expiresIn: config.jwtExpiresIn });
+  const options: jwt.SignOptions = {
+    expiresIn: config.jwtExpiresIn as jwt.SignOptions['expiresIn']
+  };
+
+  return jwt.sign(user, config.jwtSecret, options);
 }
 
 export function requireSession(req: Request, res: Response, next: NextFunction) {
