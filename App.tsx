@@ -1,11 +1,11 @@
 import React from 'react';
 import { ProductEntry } from './src/ProductEntry';
-import { ClaimantPortal } from './src/screens/ClaimantPortal';
+import { ModeShell } from './src/screens/ModeShell';
 
 export default function App() {
   return (
     <ProductEntry>
-      <ClaimantPortal />
+      <ModeShell />
     </ProductEntry>
   );
 }
