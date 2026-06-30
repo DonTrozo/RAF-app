@@ -1,12 +1,12 @@
 # RAF Connect Mobile API Contract
 
-This document defines the backend contract required to move the mobile app from mock mode to production mode.
+This document defines the implemented backend contract for the current RAF Connect scaffold.
 
-## Authentication
+## Account Routes
 
-### POST /auth/register
+### POST /accounts/register
 
-Registers a claimant account.
+Registers a claimant account and captures POPIA consent.
 
 Request:
 
@@ -25,13 +25,19 @@ Response:
 
 ```json
 {
-  "userId": "user_001",
-  "accessToken": "jwt",
-  "refreshToken": "jwt"
+  "user": {
+    "id": "user_demo_claimant",
+    "email": "claimant@example.com",
+    "fullName": "Demo Claimant",
+    "role": "claimant"
+  },
+  "accessToken": "session-token"
 }
 ```
 
-### POST /auth/login
+### POST /accounts/sign-in
+
+Signs in a claimant account.
 
 Request:
 
@@ -46,14 +52,32 @@ Response:
 
 ```json
 {
-  "accessToken": "jwt",
-  "refreshToken": "jwt"
+  "user": {
+    "id": "user_demo_claimant",
+    "email": "claimant@example.com",
+    "fullName": "Demo Claimant",
+    "role": "claimant"
+  },
+  "accessToken": "session-token"
 }
 ```
 
-## Claimant Bundle
+### POST /accounts/consent/popia
 
-### GET /mobile/claimant/bundle
+Records POPIA consent for the authenticated user.
+
+Response:
+
+```json
+{
+  "accepted": true,
+  "acceptedAt": "2026-06-30T12:00:00.000Z"
+}
+```
+
+## Claimant Routes
+
+### GET /mobile/bundle
 
 Returns the mobile dashboard payload for the logged-in claimant.
 
@@ -68,8 +92,6 @@ Response:
   "appointments": []
 }
 ```
-
-## Claim Linking
 
 ### POST /mobile/claims/link
 
@@ -93,34 +115,67 @@ Response:
 }
 ```
 
-## Document Upload
-
 ### POST /mobile/claims/:claimId/documents
 
-Uploads a supporting document. Production should use signed upload URLs or secure multipart upload.
+Requests a document upload flow for a claim.
 
-Fields:
+Request:
 
-- documentType
-- file
-- claimantId
-- claimId
+```json
+{
+  "documentType": "Medical report"
+}
+```
 
 Response:
 
 ```json
 {
   "documentId": "doc_001",
-  "status": "Under review"
+  "claimId": "claim-001",
+  "status": "Under review",
+  "uploadMode": "signed-url-placeholder"
 }
 ```
 
-## Security Requirements
+## Admin Routes
+
+### GET /admin/claims
+
+Returns admin claim queue data.
+
+### GET /admin/claims/:claimId
+
+Returns one claim and its document list.
+
+### PATCH /admin/claims/:claimId/status
+
+Updates claim status placeholder.
+
+Request:
+
+```json
+{
+  "nextStage": "Medical review"
+}
+```
+
+## Partner Routes
+
+### GET /partner/assignments
+
+Returns claim assignments for an authorised partner.
+
+### GET /partner/assignments/:claimId/documents
+
+Returns documents for an authorised partner assignment.
+
+## Production Security Requirements
 
 - All endpoints must require HTTPS.
-- All claimant endpoints must require authenticated JWT access.
+- Claimant, admin, and partner routes must require a valid session.
 - Claimants may only access claims linked to their verified identity.
-- Admin actions must be written to an immutable audit log.
-- Files must be stored in encrypted object storage.
-- Signed URLs must expire.
-- PII must not be written to plaintext logs.
+- Admin actions must be written to an append-only action history.
+- Files must be stored in encrypted private object storage.
+- Upload links must expire quickly.
+- Sensitive personal information must not be written to plaintext logs.
