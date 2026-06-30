@@ -15,14 +15,25 @@ export class ApiError extends Error {
   }
 }
 
+let sessionToken: string | null = null;
+
+export function setSessionToken(token: string | null) {
+  sessionToken = token;
+}
+
+function buildHeaders(headers?: HeadersInit): HeadersInit {
+  return {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {}),
+    ...(headers || {})
+  };
+}
+
 async function request<T>(path: string, options: RequestInit = {}): Promise<ApiResult<T>> {
   const response = await fetch(`${appConfig.apiBaseUrl}${path}`, {
     ...options,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      ...(options.headers || {})
-    }
+    headers: buildHeaders(options.headers)
   });
 
   const payload = await response.json().catch(() => null);
