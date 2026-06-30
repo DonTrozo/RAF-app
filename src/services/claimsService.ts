@@ -16,7 +16,7 @@ export async function getClaimantBundle(): Promise<ClaimBundle> {
     return Promise.resolve({ claims, documents, messages, notifications, appointments });
   }
 
-  const response = await apiClient.get<ClaimBundle>('/mobile/claimant/bundle');
+  const response = await apiClient.get<ClaimBundle>('/mobile/bundle');
   return response.data;
 }
 
@@ -29,6 +29,26 @@ export async function linkClaimReference(reference: string) {
     '/mobile/claims/link',
     { reference }
   );
+
+  return response.data;
+}
+
+export async function requestDocumentUpload(claimId: string, documentType: string) {
+  if (appConfig.enableMocks) {
+    return Promise.resolve({
+      documentId: `mock_${Date.now()}`,
+      claimId,
+      status: 'Under review',
+      uploadMode: 'mock'
+    });
+  }
+
+  const response = await apiClient.post<{
+    documentId: string;
+    claimId: string;
+    status: string;
+    uploadMode: string;
+  }>(`/mobile/claims/${claimId}/documents`, { documentType });
 
   return response.data;
 }
