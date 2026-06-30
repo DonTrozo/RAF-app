@@ -1,31 +1,31 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { ClaimantPortal } from './ClaimantPortal';
+import { ClaimantPortalGov } from './ClaimantPortalGov';
 import { AdminPortal } from './AdminPortal';
 import { SupportQueue } from './SupportQueue';
 
-type Mode = 'Claimant' | 'Admin' | 'Support';
+type Mode = 'Claimant Portal' | 'RAF Operations' | 'Service Provider';
 
 export function ModeShell() {
-  const [mode, setMode] = useState<Mode>('Claimant');
+  const [mode, setMode] = useState<Mode>('Claimant Portal');
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.page}>
         <View style={styles.box}>
           <Text style={styles.title}>RAF Connect</Text>
-          <Text style={styles.copy}>Choose a flow to test.</Text>
+          <Text style={styles.copy}>Digital claim management platform for claimants, operations teams, and authorised service providers.</Text>
           <View style={styles.row}>
-            {(['Claimant', 'Admin', 'Support'] as Mode[]).map((item) => (
+            {(['Claimant Portal', 'RAF Operations', 'Service Provider'] as Mode[]).map((item) => (
               <TouchableOpacity key={item} onPress={() => setMode(item)} style={[styles.button, mode === item && styles.active]}>
                 <Text style={[styles.buttonText, mode === item && styles.activeText]}>{item}</Text>
               </TouchableOpacity>
             ))}
           </View>
         </View>
-        {mode === 'Claimant' && <ClaimantPortal />}
-        {mode === 'Admin' && <AdminPortal />}
-        {mode === 'Support' && <SupportQueue />}
+        {mode === 'Claimant Portal' && <ClaimantPortalGov />}
+        {mode === 'RAF Operations' && <AdminPortal />}
+        {mode === 'Service Provider' && <SupportQueue />}
       </ScrollView>
     </SafeAreaView>
   );
