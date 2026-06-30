@@ -1,5 +1,5 @@
 import { appConfig } from '../config';
-import { apiClient } from '../api/client';
+import { apiClient, setSessionToken } from '../api/client';
 
 export type AuthUser = {
   id: string;
@@ -22,28 +22,33 @@ export type RegisterInput = {
   popiaConsentAccepted: boolean;
 };
 
+function rememberSession(result: AuthResult) {
+  setSessionToken(result.accessToken);
+  return result;
+}
+
 export async function registerClaimant(input: RegisterInput): Promise<AuthResult> {
   if (appConfig.enableMocks) {
-    return {
+    return rememberSession({
       user: { id: 'user_demo_claimant', email: input.email, fullName: input.fullName, role: 'claimant' },
       accessToken: 'mock-access-token'
-    };
+    });
   }
 
   const response = await apiClient.post<AuthResult>('/accounts/register', input);
-  return response.data;
+  return rememberSession(response.data);
 }
 
 export async function signInClaimant(email: string, password: string): Promise<AuthResult> {
   if (appConfig.enableMocks) {
-    return {
+    return rememberSession({
       user: { id: 'user_demo_claimant', email, fullName: 'Demo Claimant', role: 'claimant' },
       accessToken: 'mock-access-token'
-    };
+    });
   }
 
   const response = await apiClient.post<AuthResult>('/accounts/sign-in', { email, password });
-  return response.data;
+  return rememberSession(response.data);
 }
 
 export async function savePopiaConsent() {
